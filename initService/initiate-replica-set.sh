@@ -12,33 +12,17 @@ check_mongo() {
   return $mongo_exit_code
 }
 
-# Function to find the primary node.. (not used)
-find_primary() {
-  local host=$1
-  local port=$2
-  echo "Checking replica set status at $host:$port..."
-  rs_status=$(mongosh --quiet --host "$host" --port "$port" --username "$MONGOUSERNAME" --password "$MONGOPASSWORD" --authenticationDatabase "$AUTH_DB" --eval "rs.status()")
-  echo "Replica set status: $rs_status"
-  
-  # Step 1: Find the Line Number of the 'PRIMARY' State
-  primary_line=$(echo "$rs_status" | awk '/stateStr: .PRIMARY./{print NR}')
-  echo "Line number for PRIMARY state: $primary_line"
-  
-  # Step 2: Look Backwards to Find the Corresponding 'name' Field
-  primary_name_line=$(echo "$rs_status" | awk -v primary_line=$primary_line 'NR<=primary_line && /name/ {print $0; exit}')
-  echo "Line with primary name: $primary_name_line"
-  
-  # Step 3: Extract the Actual Name Value
-  PRIMARY_HOST=$(echo "$primary_name_line" | sed "s/.*name: '\([^']*\)'.*/\1/")
-  echo "Extracted primary node: $PRIMARY_HOST"
-
-  if [ -z "$PRIMARY_HOST" ]; then
-    echo "Failed to find the primary node."
-    return 1
-  else
-    echo "Primary node found: $PRIMARY_HOST"
-    return 0
-  fi
+# Function to check if all nodes are up
+check_all_nodes() {
+  local nodes=("$@")
+  for node in "${nodes[@]}"; do
+    local host=$(echo $node | cut -d: -f1)
+    local port=$(echo $node | cut -d: -f2)
+    until check_mongo "$host" "$port"; do
+      echo "Waiting for MongoDB to be up at $host:$port..."
+      sleep 2
+    done
+  done
 }
 
 # Function to initiate replica set
@@ -64,13 +48,13 @@ EOF
   return $init_exit_code
 }
 
-# Check if the designated primary node is up
-until check_mongo "$MONGO_PRIMARY_HOST" "$MONGO_PORT"; do
-  echo "Waiting for MongoDB to be up at $MONGO_PRIMARY_HOST:$MONGO_PORT..."
-  sleep 2
-done
+# List of all nodes
+nodes=("$MONGO_PRIMARY_HOST:$MONGO_PORT" "$MONGO_REPLICA_HOST:$MONGO_PORT" "$MONGO_REPLICA2_HOST:$MONGO_PORT")
 
-echo "MongoDB is up. Initiating replica set..."
+# Check if all nodes are up
+check_all_nodes "${nodes[@]}"
+
+echo "All MongoDB nodes are up. Initiating replica set..."
 
 # Initiate replica set and capture result
 if ! initiate_replica_set; then

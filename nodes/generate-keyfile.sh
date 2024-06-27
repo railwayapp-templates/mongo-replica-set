@@ -18,12 +18,6 @@ else
   echo "$KEYFILE" > "$KEYFILE_PATH"
   chown mongodb:mongodb "$KEYFILE_PATH"
   chmod 600 "$KEYFILE_PATH"
-  
-  # Debug: Verify keyfile content and permissions
-  echo "Keyfile content:"
-  cat "$KEYFILE_PATH"
-  echo "Keyfile permissions:"
-  ls -l "$KEYFILE_PATH"
 fi
 
 # Ensure the database directory exists

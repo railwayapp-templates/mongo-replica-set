@@ -49,8 +49,6 @@ initiate_replica_set() {
   echo "Replica member 1: $MONGO_REPLICA_HOST:$MONGO_PORT"
   echo "Replica member 2: $MONGO_REPLICA2_HOST:$MONGO_PORT"
 
-  echo "username: $MONGOUSERNAME"
-  echo "psasword: $MONGOPASSWORD"
   mongosh --host "$MONGO_PRIMARY_HOST" --port "$MONGO_PORT" --username "$MONGOUSERNAME" --password "$MONGOPASSWORD" --authenticationDatabase "admin" <<EOF
 rs.initiate({
   _id: "$REPLICA_SET_NAME",

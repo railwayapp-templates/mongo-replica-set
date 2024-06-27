@@ -64,16 +64,17 @@ fi
 
 # Execute GraphQL mutation to remove the init service
 echo "Executing GraphQL mutation to remove the init service..."
-curl --location "$RAILWAY_API_URL" \
+response=$(curl --silent --location "$RAILWAY_API_URL" \
   --header 'Content-Type: application/json' \
   --header "Authorization: Bearer $RAILWAY_API_TOKEN" \
-  --data "{\"query\":\"mutation serviceDelete(\$environmentId: String, \$id: String!) { serviceDelete(environmentId: \$environmentId, id: \$id) }\",\"variables\":{\"environmentId\":\"$ENVIRONMENT_ID\",\"id\":\"$SERVICE_ID\"}}"
+  --data "{\"query\":\"mutation serviceDelete(\$environmentId: String, \$id: String!) { serviceDelete(environmentId: \$environmentId, id: \$id) }\",\"variables\":{\"environmentId\":\"$ENVIRONMENT_ID\",\"id\":\"$SERVICE_ID\"}}")
 
-if [ $? -eq 0 ]; then
-  echo "GraphQL mutation executed successfully."
-else
-  echo "Failed to delete the service via the API. Please delete it manually."
+# Check for errors in the GraphQL response
+if echo "$response" | grep -q '"errors"'; then
+  echo "Failed to delete the service via the API. Response: $response"
   exit 1
+else
+  echo "GraphQL mutation executed successfully. Response: $response"
 fi
 
 exit 0

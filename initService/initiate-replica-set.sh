@@ -37,8 +37,8 @@ check_all_nodes() {
       echo "Waiting..."
       sleep 2
     done
-  echo "All MongoDB nodes are up."
   done
+  echo "All MongoDB nodes are up."
 }
 
 initiate_replica_set() {

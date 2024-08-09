@@ -72,13 +72,18 @@ check_all_nodes "${nodes[@]}"
 
 if initiate_replica_set; then
   echo "**********************************************************"
+  echo "**********************************************************"
+  echo "*                                                        *"
   echo "*           Replica set initiated successfully.          *"
   echo "*                                                        *"
   echo "*              PLEASE DELETE THIS SERVICE.               *"
+  echo "*                                                        *"
   echo "**********************************************************"
   exit 0
 else
   echo "**********************************************************"
+  echo "**********************************************************"
+  echo "*                                                        *"
   echo "*           Failed to initiate replica set.              *"
   echo "*                                                        *"
   echo "*           Please check the MongoDB service logs        *"
@@ -86,6 +91,7 @@ else
   echo "*                                                        *"
   echo "*          You can also set DEBUG=1 as a variable        *"
   echo "*            on this service for verbose logging.        *"
+  echo "*                                                        *"
   echo "**********************************************************"
   exit 1
 fi

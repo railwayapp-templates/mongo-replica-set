@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# Function to print debug messages
 debug_log() {
-  if [ "$DEBUG" -eq 1 ]; then
+  if [[ "$DEBUG" == "1" ]]; then
     echo "DEBUG: $1"
   fi
 }
@@ -71,7 +70,6 @@ print_on_start
 
 check_all_nodes "${nodes[@]}"
 
-# Initiate replica set and report result
 if initiate_replica_set; then
   echo "**********************************************************"
   echo "*           Replica set initiated successfully.          *"

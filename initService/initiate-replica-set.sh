@@ -9,8 +9,7 @@ debug_log() {
 print_on_start() {
   echo "**********************************************************"
   echo "*                                                        *"
-  echo -e "*  Deploying a Mongo Replica Set to Railway...           *"
-  echo -e "*  \033]8;;https://railway.app\033\\(Click here to open Railway)\033]8;;\033\\         *"
+  echo "*  Deploying a Mongo Replica Set to Railway...           *"
   echo "*                                                        *"
   echo "*  To enable verbose logging, set DEBUG=1                *"
   echo "*  and redeploy the service.                             *"

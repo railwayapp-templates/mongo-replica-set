@@ -4,9 +4,9 @@ This repo contains the resources required to deploy a Mongo replica set in Railw
 
 To deploy your own Mongo replica set in Railway, just click the button below!
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/gFmvuY)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/template/ha-mongo)
 
-For even more information, check out the tutorial in Railway:  [Deploy and Monitor a MongoDB Replica Set](https://docs.railway.app/tutorials/deploy-and-monitor-mongo)
+For even more information, check out the tutorial in Railway:  [Deploy and Monitor a MongoDB Replica Set](https://docs.railway.com/tutorials/deploy-and-monitor-mongo)
 
 ### About the MongoDB Nodes
 The MongoDB nodes in the replica set are built from the [Mongo CE image in Docker Hub](https://hub.docker.com/_/mongo).  The only customization to the image, is the inclusion of a [Keyfile](https://www.mongodb.com/docs/manual/tutorial/deploy-replica-set-with-keyfile-access-control/) to enable authentication.
